@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 import { useRouter } from "next/navigation";
-import { MoreHorizontal, MessageSquare, Paperclip } from "lucide-react";
+import { MoreHorizontal, MessageSquare, Paperclip, Trash } from "lucide-react";
 import { Task } from "@/types/task";
 
 interface TaskCardProps extends Task {
@@ -15,6 +15,7 @@ interface TaskCardProps extends Task {
   priority?: string;
   comments?: any[];
   attachments?: number;
+  onDelete: (id: string) => void; // Add onDelete prop
 }
 
 const getPriorityColor = (priority?: string) => {
@@ -62,8 +63,10 @@ const TaskCard: React.FC<TaskCardProps> = ({
   priority,
   comments = [],
   attachments = 0,
+  onDelete, // Destructure onDelete
 }) => {
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage menu visibility
 
   const [{ isDragging }, drag] = useDrag({
     type: "TASK",
@@ -72,6 +75,17 @@ const TaskCard: React.FC<TaskCardProps> = ({
       isDragging: monitor.isDragging(),
     }),
   });
+
+  const handleMenuClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setIsMenuOpen(!isMenuOpen); // Toggle menu visibility
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    onDelete(id); // Call onDelete with task id
+    setIsMenuOpen(false); // Close the menu
+  };
 
   return (
     <div
@@ -90,15 +104,29 @@ const TaskCard: React.FC<TaskCardProps> = ({
           <span className={`w-2 h-2 rounded-full ${getStatusColor(status)}`} />
           {status}
         </div>
-        <button
-          className="text-gray-400 hover:text-white"
-          onClick={(e) => {
-            e.stopPropagation();
-            // Add your menu handling logic here
-          }}
-        >
-          <MoreHorizontal size={16} />
-        </button>
+        <div className="relative">
+          {/* Three Dots Button */}
+          <button
+            className="text-gray-400 hover:text-white"
+            onClick={handleMenuClick}
+          >
+            <MoreHorizontal size={16} />
+          </button>
+
+          {/* Dropdown Menu */}
+          {isMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-lg shadow-lg z-10">
+              {/* Delete Option */}
+              <button
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-gray-600"
+                onClick={handleDeleteClick}
+              >
+                <Trash size={14} />
+                Delete Task
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <h3 className="text-white font-medium">{title}</h3>

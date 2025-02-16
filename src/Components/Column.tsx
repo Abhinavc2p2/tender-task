@@ -8,6 +8,7 @@ interface ColumnProps {
   tasks: Task[];
   onDrop: (task: Task, newStatus: Task["status"]) => void;
   onAddTask: (status: Task["status"]) => void;
+  onDelete: (id: string) => void; // Add onDelete prop
 }
 
 const statusColors: Record<string, string> = {
@@ -17,7 +18,7 @@ const statusColors: Record<string, string> = {
   "Completed": "bg-green-500",
 };
 
-const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask }) => {
+const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask, onDelete }) => {
   const [{ isOver }, drop] = useDrop({
     accept: "TASK",
     drop: (task: Task) => onDrop(task, title),
@@ -25,6 +26,7 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask }) => {
       isOver: monitor.isOver(),
     }),
   });
+
 
   return (
     <div ref={drop} className="w-[400px] h-full min-h-screen p-6 rounded-lg shadow-lg bg-black">
@@ -59,10 +61,10 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask }) => {
 
      
       <div className="space-y-4 max-h-[600px] overflow-y-auto hide-scrollbar">
-  {tasks.map((task) => (
-    <TaskCard key={task.id} {...task} />
-  ))}
-</div>
+        {tasks.map((task) => (
+          <TaskCard key={task.id} {...task} onDelete={onDelete} />
+        ))}
+      </div>
     </div>
   );
 };
