@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import { MoreHorizontal, MessageSquare, Paperclip, Trash } from "lucide-react";
 import { Task } from "@/types/task";
 
-interface TaskCardProps extends Task {
+interface TaskCardProps extends Omit<Task, 'assignee'> {
   id: string;
   title: string;
   description: string;
   status?: string;
-  assignee?: string;
+
+  assignee?: string; // Make assignee optional
+ 
   assigneeImage?: string;
   dueDate?: string;
   priority?: string;
@@ -69,7 +71,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage menu visibility
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging },] = useDrag({
     type: "TASK",
     item: { id, status },
     collect: (monitor) => ({
@@ -91,7 +93,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
   return (
     <div
     
-      ref={drag} // eslint-disable-line @typescript-eslint/no-explicit-any
+      
       onClick={() => router.push(`/task/${id}`)}
       className={`bg-gray-800 rounded-lg p-4 mb-3 space-y-3 cursor-pointer transition-all ${
         isDragging ? "opacity-50" : "opacity-100"

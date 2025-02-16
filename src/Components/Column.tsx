@@ -30,14 +30,14 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask, onDele
 
   return (
     
-    <div ref={drop} className="w-[400px] h-full min-h-screen p-6 rounded-lg shadow-lg bg-black">
-      {/* Header with status color, title, task count, +, and three dots */}
+    <div  className="w-[400px] h-full min-h-screen p-6 rounded-lg shadow-lg bg-black">
+      
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          {/* Status Color Circle on the Left of Title */}
+        
           <span className={`w-3 h-3 rounded-full ${statusColors[title]}`} />
           
-          {/* Column Title with Task Count */}
+        
           <h2 className="text-xl font-semibold text-white flex items-center gap-2">
             {title}
             <span className="flex items-center justify-center w-6 h-6 text-sm font-semibold text-white bg-gray-700 rounded-full">
@@ -62,9 +62,9 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask, onDele
 
      
       <div className="space-y-4 max-h-[600px] overflow-y-auto hide-scrollbar">
-        {tasks.map((task) => (
-          <TaskCard key={task.id} {...task} onDelete={onDelete} />
-        ))}
+      {tasks.map((task, index) => (
+  <TaskCard key={task.id || index} {...task} onDelete={onDelete} />
+))}
       </div>
     </div>
   );
