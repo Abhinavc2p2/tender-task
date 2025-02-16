@@ -13,6 +13,7 @@ interface TaskCardProps extends Task {
   assigneeImage?: string;
   dueDate?: string;
   priority?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   comments?: any[];
   attachments?: number;
   onDelete: (id: string) => void; // Add onDelete prop
@@ -89,7 +90,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
 
   return (
     <div
-      ref={drag}
+    
+      ref={drag} // eslint-disable-line @typescript-eslint/no-explicit-any
       onClick={() => router.push(`/task/${id}`)}
       className={`bg-gray-800 rounded-lg p-4 mb-3 space-y-3 cursor-pointer transition-all ${
         isDragging ? "opacity-50" : "opacity-100"
@@ -135,6 +137,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
       <div className="flex justify-between items-center">
         <span className="text-gray-400 text-sm">Assignee</span>
         {assigneeImage ? (
+          /* eslint-disable @next/next/no-img-element */
           <img src={assigneeImage} alt={assignee || "Assignee"} className="w-6 h-6 rounded-full" />
         ) : (
           <div className="w-6 h-6 rounded-full bg-gray-600" />

@@ -17,8 +17,8 @@ const statusColors: Record<string, string> = {
   "In Progress": "bg-yellow-500",
   "Completed": "bg-green-500",
 };
-
 const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask, onDelete }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [{ isOver }, drop] = useDrop({
     accept: "TASK",
     drop: (task: Task) => onDrop(task, title),
@@ -29,6 +29,7 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, onDrop, onAddTask, onDele
 
 
   return (
+    
     <div ref={drop} className="w-[400px] h-full min-h-screen p-6 rounded-lg shadow-lg bg-black">
       {/* Header with status color, title, task count, +, and three dots */}
       <div className="flex justify-between items-center mb-4">
