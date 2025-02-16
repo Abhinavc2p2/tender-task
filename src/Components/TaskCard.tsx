@@ -4,21 +4,14 @@ import { useRouter } from "next/navigation";
 import { MoreHorizontal, MessageSquare, Paperclip, Trash } from "lucide-react";
 import { Task } from "@/types/task";
 
-interface TaskCardProps extends Omit<Task, 'assignee'> {
-  id: string;
-  title: string;
-  description: string;
-  status?: string;
-
-  assignee?: string; // Make assignee optional
- 
+interface TaskCardProps extends Omit<Task, 'priority' | 'status' | 'comments'> {
+  priority?: string; // Made optional and string instead of "High" | "Medium" | "Low"
+  status?: string; // Made optional and string instead of strict union type
   assigneeImage?: string;
-  dueDate?: string;
-  priority?: string;
+  attachments?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   comments?: any[];
-  attachments?: number;
-  onDelete: (id: string) => void; // Add onDelete prop
+  onDelete: (id: string) => void;
 }
 
 const getPriorityColor = (priority?: string) => {
